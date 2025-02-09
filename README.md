@@ -10,9 +10,9 @@ LaMini training results with the baseline and the optimized versions. From left 
 
 | label | model | layers | interm. dims. | non-emb. params. | % | Train Loss | Val. Loss |
 |:-----:|:------:|:-------:|:-------------:|:----------------:|:---:|:----------:|:----------:|
-| JP47D54C | phi-3 | 2 | 8192 | 227M | | **1.08** | 1.58 |
-| JP47D55C | kphi-3 | 2 | 9216 | **15M** | **15%** | 1.26 | 1.60 |
-| JP47D56C | kphi-3 | 3 | 9216 | 23M | 23% | 1.21 | **1.57** |
+| [JP47D54C](https://github.com/joaopauloschuler/less-parameters-llm/tree/main/raw/JP47D54C_Baseline_2T.ipynb) | phi-3 | 2 | 8192 | 227M | | **1.08** | 1.58 |
+| [JP47D55C](https://github.com/joaopauloschuler/less-parameters-llm/tree/main/raw/JP47D55C_kphi3_2T.ipynb) | kphi-3 | 2 | 9216 | **15M** | **15%** | 1.26 | 1.60 |
+| [JP47D56C](https://github.com/joaopauloschuler/less-parameters-llm/tree/main/raw/JP47D56C_kphi3_3T.ipynb) | kphi-3 | 3 | 9216 | 23M | 23% | 1.21 | **1.57** |
 
 ## The Raw Results Folder
 You can find all raw experiment files used for the technical report on the [raw](https://github.com/joaopauloschuler/less-parameters-llm/tree/main/raw) folder.
