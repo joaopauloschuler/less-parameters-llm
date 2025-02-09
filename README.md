@@ -20,8 +20,8 @@ The following table shows LaMini training results with the baseline and the opti
 | label | model | layers | interm. dims. | non-emb. params. | % | Train Loss | Val. Loss |
 |:-----:|:------:|:-------:|:-------------:|:----------------:|:---:|:----------:|:----------:|
 | [JP47D54C](https://github.com/joaopauloschuler/less-parameters-llm/tree/main/raw/JP47D54C_Baseline_2T.ipynb) | phi-3 | 2 | 8192 | [227M](https://huggingface.co/schuler/experimental-JP47D54C) | | **1.08** | 1.58 |
-| [JP47D55C](https://github.com/joaopauloschuler/less-parameters-llm/tree/main/raw/JP47D55C_kphi3_2T.ipynb) | kphi-3 | 2 | 9216 | [**15M**](https://huggingface.co/schuler/experimental-JP47D55C) | **15%** | 1.26 | 1.60 |
-| [JP47D56C](https://github.com/joaopauloschuler/less-parameters-llm/tree/main/raw/JP47D56C_kphi3_3T.ipynb) | kphi-3 | 3 | 9216 | [23M](https://huggingface.co/schuler/experimental-JP47D56C) | 23% | 1.21 | **1.57** |
+| [JP47D55C](https://github.com/joaopauloschuler/less-parameters-llm/tree/main/raw/JP47D55C_kphi3_2T.ipynb) | kphi-3 | 2 | 9216 | [**35M**](https://huggingface.co/schuler/experimental-JP47D55C) | **15%** | 1.26 | 1.60 |
+| [JP47D56C](https://github.com/joaopauloschuler/less-parameters-llm/tree/main/raw/JP47D56C_kphi3_3T.ipynb) | kphi-3 | 3 | 9216 | [53M](https://huggingface.co/schuler/experimental-JP47D56C) | 23% | 1.21 | **1.57** |
 
 ## Quick Links
 - [📄 Full Technical Report (PDF)](https://www.researchgate.net/publication/360226228_Grouped_Pointwise_Convolutions_Reduce_Parameters_in_Convolutional_Neural_Networks)
