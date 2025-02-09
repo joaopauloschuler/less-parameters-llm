@@ -6,6 +6,13 @@ This technical report demonstrates that large language models (LLMs) can maintai
 
 ## Results
 
+LaMini training results with the baseline and the optimized versions. From left to right: experiment label, model name, number of transformer decoder layers, intermediate dimensions, number of non-embedding parameters, training loss and validation loss.
+
+| label | model | layers | interm. dims. | non-emb. params. | % | Train Loss | Val. Loss |
+|:-----:|:------:|:-------:|:-------------:|:----------------:|:---:|:----------:|:----------:|
+| JP47D54C | phi-3 | 2 | 8192 | 227M | | **1.08** | 1.58 |
+| JP47D55C | kphi-3 | 2 | 9216 | **15M** | **15%** | 1.26 | 1.60 |
+| JP47D56C | kphi-3 | 3 | 9216 | 23M | 23% | 1.21 | **1.57** |
 
 ## The Raw Results Folder
 You can find all raw experiment files used for the technical report on the [raw](https://github.com/joaopauloschuler/less-parameters-llm/tree/main/raw) folder.
