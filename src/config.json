@@ -1,0 +1,39 @@
+{
+  "_name_or_path": "schuler/experimental-JP47D20",
+  "architectures": [
+    "KPhi3ForCausalLM"
+  ],
+  "attention_dropout": 0.0,
+  "auto_map": {
+    "AutoConfig": "schuler/experimental-JP47D20--configuration_kphi3.KPhi3Config",
+    "AutoModelForCausalLM": "schuler/experimental-JP47D20--modeling_kphi3.KPhi3ForCausalLM"
+  },
+  "bos_token_id": 1,
+  "do_layer_norm_before": true,
+  "embd_pdrop": 0.0,
+  "embed_size": 1280,
+  "eos_token_id": 2,
+  "ffn_dim": 1280,
+  "hidden_act": "silu",
+  "hidden_size": 1280,
+  "initializer_range": 0.02,
+  "intermediate_size": 5120,
+  "max_position_embeddings": 4096,
+  "min_channels_per_group": 256,
+  "model_type": "kphi3",
+  "num_attention_heads": 20,
+  "num_hidden_layers": 4,
+  "num_key_value_heads": 20,
+  "original_max_position_embeddings": 4096,
+  "pad_token_id": 0,
+  "resid_pdrop": 0.0,
+  "rms_norm_eps": 1e-05,
+  "rope_scaling": null,
+  "rope_theta": 10000.0,
+  "sliding_window": null,
+  "tie_word_embeddings": false,
+  "torch_dtype": "float32",
+  "transformers_version": "4.46.3",
+  "use_cache": true,
+  "vocab_size": 32064
+}
