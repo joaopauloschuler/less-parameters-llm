@@ -10,8 +10,8 @@ This technical report demonstrates that large language models (LLMs) can maintai
 - Improved output quality in qualitative testing.
 
 ## Implementation Details
-- Base Model: Microsoft's phi-3-mini-4k-instruct.
-- Training Dataset: LaMini.
+- Base Model: Microsoft's [phi-3-mini-4k-instruct](https://huggingface.co/microsoft/Phi-3-mini-4k-instruct).
+- Training Dataset: [LaMini](https://huggingface.co/datasets/MBZUAI/LaMini-instruction).
 - Architecture: Modified transformer decoder with grouped pointwise convolutions.
 
 ## Results
