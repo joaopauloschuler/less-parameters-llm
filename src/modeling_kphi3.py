@@ -1333,7 +1333,7 @@ class KPhi3Model(KPhi3PreTrainedModel):
 
         self.embed_tokens = nn.Embedding(config.vocab_size, config.embed_size, self.padding_idx)
         if config.embed_size != config.hidden_size:
-            self.embed_to_hidden = GroupedPointwiseConvolutionBlock(config.embed_size, config.hidden_size, config.min_channels_per_group)
+            self.embed_to_hidden = GroupedPointwiseConvolutionBlockIO(config.embed_size, config.hidden_size, config.min_channels_per_group)
         self.embed_dropout = nn.Dropout(config.embd_pdrop)
         self.layers = nn.ModuleList(
             [KPhi3DecoderLayer(config, layer_idx) for layer_idx in range(config.num_hidden_layers)]
@@ -1555,7 +1555,7 @@ class KPhi3ForCausalLM(KPhi3PreTrainedModel):
         self.model = KPhi3Model(config)
         self.vocab_size = config.vocab_size
         if config.embed_size != config.hidden_size:
-          self.hidden_to_embed = GroupedPointwiseConvolutionBlock(config.hidden_size, config.embed_size, config.min_channels_per_group)
+          self.hidden_to_embed = GroupedPointwiseConvolutionBlockIO(config.hidden_size, config.embed_size, config.min_channels_per_group)
         self.lm_head = nn.Linear(config.embed_size, config.vocab_size, bias=False)
 
         # Initialize weights and apply final processing
