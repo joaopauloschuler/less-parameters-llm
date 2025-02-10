@@ -44,9 +44,9 @@ class KPhi3Config(PretrainedConfig):
             `inputs_ids` passed when calling [`Phi3Model`].
         hidden_size (`int`, *optional*, defaults to 3072):
             Dimension of the hidden representations.
-        intermediate_size (`int`, *optional*, defaults to 8192):
+        intermediate_size (`int`, *optional*, defaults to 9216):
             Dimension of the MLP representations.
-        num_hidden_layers (`int`, *optional*, defaults to 32):
+        num_hidden_layers (`int`, *optional*, defaults to 3):
             Number of hidden layers in the Transformer decoder.
         num_attention_heads (`int`, *optional*, defaults to 32):
             Number of attention heads for each attention layer in the Transformer decoder.
