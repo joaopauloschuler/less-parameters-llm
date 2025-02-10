@@ -298,9 +298,13 @@ class GroupedPointwiseConvolutionBlock(nn.Module):
         group_count = get_max_acceptable_common_divisor(prev_layer_channel_count, output_channel_count, max_acceptable = max_acceptable_divisor)
         if group_count is None: group_count=1
         self.output_group_size = output_channel_count // group_count
+        # input_group_size = prev_layer_channel_count // group_count
 
         if (group_count>1):
             self.grouped = True
+            #print ('Input channels:', prev_layer_channel_count, 'Output Channels:',output_channel_count,'Groups:', group_count, 'Input channels per group:', input_group_size, 'Output channels per group:', output_group_size)
+            # conv2d_bn(output_tensor, output_channel_count, kernel_size, kernel_size, name=name, activation=activation, has_batch_norm=has_batch_norm, has_batch_scale=has_batch_scale, groups=group_count, use_bias=use_bias, strides=(stride_size, stride_size), padding=padding)
+            # self.first_pointwise_conv = GroupedLinear(in_features=in_features, out_features=out_features, num_groups=group_count, bias=use_bias)
             self.first_pointwise_conv = GroupedLinearFast(in_features=in_features, out_features=out_features, num_groups=group_count, bias=use_bias)
             if self.output_group_size > 1:
                 self.has_interleaving = True
@@ -308,10 +312,13 @@ class GroupedPointwiseConvolutionBlock(nn.Module):
             if (prev_layer_channel_count >= output_channel_count):
                 # print('Has intergroup')
                 self.second_conv = True
+                # conv2d_bn(output_tensor, output_channel_count, 1, 1, name=name+'_group_interconn', activation=activation, has_batch_norm=has_batch_norm, has_batch_scale=has_batch_scale, groups=group_count, use_bias=use_bias)
+                # self.second_pointwise_conv = GroupedLinear(in_features=out_features, out_features=out_features, num_groups=group_count, bias=use_bias)
                 self.second_pointwise_conv = GroupedLinearFast(in_features=out_features, out_features=out_features, num_groups=group_count, bias=use_bias)
         else:
             #print ('Dismissed groups:', group_count, 'Input channels:', prev_layer_channel_count, 'Output Channels:', output_channel_count, 'Input channels per group:', input_group_size, 'Output channels per group:', output_group_size)
-            self.first_pointwise_conv = GroupedLinear(in_features=in_features, out_features=out_features, num_groups=1, bias=use_bias)
+            #self.first_pointwise_conv = conv2d_bn(output_tensor, output_channel_count, kernel_size, kernel_size, name=name, activation=activation, has_batch_norm=has_batch_norm, has_batch_scale=has_batch_scale, use_bias=use_bias)
+            self.first_pointwise_conv = GroupedLinear(in_features=in_features, out_features=out_features, num_groups=group_count, bias=use_bias)
 
     def forward(self, x):
       if (self.grouped):
@@ -332,6 +339,71 @@ class GroupedPointwiseConvolutionBlock(nn.Module):
             output_tensor = self.activation(output_tensor)
       return output_tensor
 
+class GroupedPointwiseConvolutionBlockIO(nn.Module):
+    """
+    This layer is composed by a grouped pointwise convolution followed by interleaving and another grouped pointwise comvolution with skip connection. This basic architecture can
+    vary according to the input tensor and its parameters. This is the basic building block for the papers:
+    https://www.researchgate.net/publication/360226228_Grouped_Pointwise_Convolutions_Reduce_Parameters_in_Convolutional_Neural_Networks
+    https://www.researchgate.net/publication/355214501_Grouped_Pointwise_Convolutions_Significantly_Reduces_Parameters_in_EfficientNet
+    This layer assumes "channel last".
+    """
+    def __init__(self, in_features, out_features, min_channels_per_group=32, last_dim=2, use_bias=False, activation=None, has_batch_norm=False, has_batch_scale=False):
+        super().__init__()
+        self.in_features = in_features
+        self.out_features = out_features
+        self.min_channels_per_group = min_channels_per_group
+        self.last_dim = last_dim
+        self.activation = activation
+        self.has_batch_norm = has_batch_norm
+        self.has_batch_scale = has_batch_scale
+        self.has_interleaving = False
+        self.use_bias = use_bias
+        self.grouped = False
+        self.second_conv = False
+        self.first_pointwise_conv = None
+        self.second_pointwise_conv = None
+        self.interleave_layer = None
+        # this is a hack to prevent runtime errors
+        self.weight = torch.Tensor(1, 1, 1)
+        self.bias = torch.Tensor(1, 1, 1)
+
+        prev_layer_channel_count = in_features
+        output_channel_count = out_features
+        max_acceptable_divisor = (prev_layer_channel_count//min_channels_per_group)
+        group_count = get_max_acceptable_common_divisor(prev_layer_channel_count, output_channel_count, max_acceptable = max_acceptable_divisor)
+        if group_count is None: group_count=1
+        self.output_group_size = output_channel_count // group_count
+        self.input_group_size = prev_layer_channel_count // group_count
+
+        if (group_count>1):
+            self.grouped = True
+            self.has_interleaving = True
+            self.second_conv = True
+            #print ('Input channels:', prev_layer_channel_count, 'Output Channels:',output_channel_count,'Groups:', group_count, 'Input channels per group:', input_group_size, 'Output channels per group:', output_group_size)
+            # conv2d_bn(output_tensor, output_channel_count, kernel_size, kernel_size, name=name, activation=activation, has_batch_norm=has_batch_norm, has_batch_scale=has_batch_scale, groups=group_count, use_bias=use_bias, strides=(stride_size, stride_size), padding=padding)
+            # self.first_pointwise_conv = GroupedLinear(in_features=in_features, out_features=out_features, num_groups=group_count, bias=use_bias)
+            self.first_pointwise_conv = GroupedLinearFast(in_features=in_features, out_features=out_features, num_groups=group_count, bias=use_bias)
+            self.interleave_layer = InterleaveChannelsFast(self.input_group_size, last_dim=last_dim)
+            # print('Has intergroup')
+            # conv2d_bn(output_tensor, output_channel_count, 1, 1, name=name+'_group_interconn', activation=activation, has_batch_norm=has_batch_norm, has_batch_scale=has_batch_scale, groups=group_count, use_bias=use_bias)
+            # self.second_pointwise_conv = GroupedLinear(in_features=in_features, out_features=out_features, num_groups=group_count, bias=use_bias)
+            self.second_pointwise_conv = GroupedLinearFast(in_features=in_features, out_features=out_features, num_groups=group_count, bias=use_bias)
+        else:
+            #print ('Dismissed groups:', group_count, 'Input channels:', prev_layer_channel_count, 'Output Channels:', output_channel_count, 'Input channels per group:', input_group_size, 'Output channels per group:', output_group_size)
+            #self.first_pointwise_conv = conv2d_bn(output_tensor, output_channel_count, kernel_size, kernel_size, name=name, activation=activation, has_batch_norm=has_batch_norm, has_batch_scale=has_batch_scale, use_bias=use_bias)
+            self.first_pointwise_conv = GroupedLinear(in_features=in_features, out_features=out_features, num_groups=group_count, bias=use_bias)
+
+    def forward(self, x):
+      if (self.grouped):
+        if self.activation is not None:
+          return self.activation(self.first_pointwise_conv(x) + self.second_pointwise_conv(self.interleave_layer(x)))
+        else:
+          return self.first_pointwise_conv(x) + self.second_pointwise_conv(self.interleave_layer(x))
+      else:
+        if self.activation is not None:
+          return self.activation(self.first_pointwise_conv(x))
+        else:
+          return self.first_pointwise_conv(x)
 
 logger = logging.get_logger(__name__)
 
