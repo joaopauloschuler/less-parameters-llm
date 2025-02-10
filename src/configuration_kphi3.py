@@ -15,7 +15,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-""" Phi-3 model configuration"""
+""" KPhi-3 model configuration"""
 
 
 from transformers.configuration_utils import PretrainedConfig
@@ -117,17 +117,17 @@ class KPhi3Config(PretrainedConfig):
     def __init__(
         self,
         vocab_size=32064,
-        embed_size=1024,
-        hidden_size=1024,
-        intermediate_size=4096,
-        num_hidden_layers=4,
-        num_attention_heads=4,
+        embed_size=3072,
+        hidden_size=3072,
+        intermediate_size=9216,
+        num_hidden_layers=3,
+        num_attention_heads=32,
         num_key_value_heads=None,
         resid_pdrop=0.0,
         embd_pdrop=0.0,
         attention_dropout=0.0,
         hidden_act="silu",
-        max_position_embeddings=4096,
+        max_position_embeddings=128000,
         original_max_position_embeddings=4096,
         initializer_range=0.02,
         rms_norm_eps=1e-5,
