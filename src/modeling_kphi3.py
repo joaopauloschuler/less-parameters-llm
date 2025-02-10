@@ -700,8 +700,8 @@ class KPhi3MLP(nn.Module):
         self.config = config
         self.activation_fn = ACT2FN[config.hidden_act]
         if self.config.min_channels_per_group >= 0:
-          self.gate_up_proj = GroupedPointwiseConvolutionBlock(in_features=config.hidden_size, out_features=(2*config.intermediate_size), min_channels_per_group=self.config.min_channels_per_group , last_dim=2, use_bias=False)
-          self.down_proj = GroupedPointwiseConvolutionBlock(in_features=config.intermediate_size, out_features=config.hidden_size, min_channels_per_group=self.config.min_channels_per_group, last_dim=2, use_bias=False)
+          self.gate_up_proj = GroupedPointwiseConvolutionBlockIO(in_features=config.hidden_size, out_features=(2*config.intermediate_size), min_channels_per_group=self.config.min_channels_per_group , last_dim=2, use_bias=False)
+          self.down_proj = GroupedPointwiseConvolutionBlockIO(in_features=config.intermediate_size, out_features=config.hidden_size, min_channels_per_group=self.config.min_channels_per_group, last_dim=2, use_bias=False)
         else:
           self.gate_up_proj = nn.Linear(config.hidden_size, 2 * config.intermediate_size, bias=False)
           self.down_proj = nn.Linear(config.intermediate_size, config.hidden_size, bias=False)
@@ -762,8 +762,8 @@ class KPhi3Attention(nn.Module):
 
         op_size = self.num_heads * self.head_dim + 2 * (self.num_key_value_heads * self.head_dim)
         if self.config.min_channels_per_group >= 0:
-          self.o_proj = GroupedPointwiseConvolutionBlock(in_features=self.num_heads * self.head_dim, out_features=self.hidden_size, min_channels_per_group=self.config.min_channels_per_group, last_dim=2, use_bias=False)
-          self.qkv_proj = GroupedPointwiseConvolutionBlock(in_features=self.hidden_size, out_features=op_size, min_channels_per_group=self.config.min_channels_per_group, last_dim=2, use_bias=False)
+          self.o_proj = GroupedPointwiseConvolutionBlockIO(in_features=self.num_heads * self.head_dim, out_features=self.hidden_size, min_channels_per_group=self.config.min_channels_per_group, last_dim=2, use_bias=False)
+          self.qkv_proj = GroupedPointwiseConvolutionBlockIO(in_features=self.hidden_size, out_features=op_size, min_channels_per_group=self.config.min_channels_per_group, last_dim=2, use_bias=False)
         else:
           self.o_proj = nn.Linear(self.num_heads * self.head_dim, self.hidden_size, bias=False)
           self.qkv_proj = nn.Linear(self.hidden_size, op_size, bias=False)
@@ -1016,8 +1016,8 @@ class KPhi3FlashAttention2(KPhi3Attention):
 # TODO @Arthur no longer copied from LLama after static cache
 class KPhi3SdpaAttention(KPhi3Attention):
     """
-    Phi3 attention module using torch.nn.functional.scaled_dot_product_attention. This module inherits from
-    `Phi3Attention` as the weights of the module stays untouched. The only changes are on the forward pass to adapt to
+    KPhi3 attention module using torch.nn.functional.scaled_dot_product_attention. This module inherits from
+    `KPhi3Attention` as the weights of the module stays untouched. The only changes are on the forward pass to adapt to
     SDPA API.
     """
 
