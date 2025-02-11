@@ -2,7 +2,7 @@
 This repository contains the source code for the [Saving 77\% of the Parameters in Large Language Models Technical Report (PDF)](https://www.researchgate.net/publication/388835829_SAVING_77_OF_THE_PARAMETERS_IN_LARGE_LANGUAGE_MODELS_TECHNICAL_REPORT).
 
 ## Abstract
-This technical report demonstrates that large language models (LLMs) can maintain their learning capacity while reducing their non-embedding parameters by up to 77\%. We achieve this by adapting a parameter reduction technique originally developed for computer vision, replacing dense layers with an optimized subnetwork that contains grouped pointwise convolutions. Using Microsoft's phi-3-mini-4k-instruct as our baseline, we show that our optimized model (kphi-3) achieves comparable validation loss while using only 15-23\% of the original non-embedding parameters. All experiments were conducted on a single NVIDIA L2 GPU within a 3-day timeframe, supporting the democratization of AI research. Our findings suggest that current LLM architectures may be substantially overparameterized, opening possibilities for more efficient model training and deployment.
+This technical report demonstrates that large language models (LLMs) can maintain their learning capacity while reducing their non-embedding parameters by up to 77\%. We achieve this by adapting a parameter reduction technique originally developed for computer vision, replacing dense layers with an optimized subnetwork that contains grouped pointwise convolutions. Using Microsoft's phi-3-mini-4k-instruct as our baseline, we show that our optimized model (kphi-3) achieves comparable validation loss while using only 15-23\% of the original non-embedding parameters. All experiments were conducted on a single NVIDIA L4 GPU within a 3-day timeframe, supporting the democratization of AI research. Our findings suggest that current LLM architectures may be substantially overparameterized, opening possibilities for more efficient model training and deployment.
 
 ## Key Findings
 - Achieved 77% parameter reduction while maintaining model performance.
@@ -31,3 +31,4 @@ The following table shows LaMini training results with the baseline and the opti
 ## Repository Structure
 - /raw: Contains all raw experiment files and notebooks. Each experiment is documented in separate notebooks (JP47D54C, JP47D55C, JP47D56C).
 - /src: Source code of the optimized model.
+
