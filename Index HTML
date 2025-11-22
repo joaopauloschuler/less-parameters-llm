@@ -1,0 +1,124 @@
+‎<!DOCTYPE html><html lang="es">
+‎<head>
+‎<meta charset="UTF-8" />
+‎<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+‎<title>Ruleta Rusa</title>
+‎<style>
+‎  body {
+‎    background: #111;
+‎    color: #eee;
+‎    font-family: Arial, sans-serif;
+‎    display: flex;
+‎    justify-content: center;
+‎    align-items: center;
+‎    height: 100vh;
+‎  }
+‎  .container {
+‎    background: #222;
+‎    padding: 20px;
+‎    border-radius: 10px;
+‎    width: 350px;
+‎    text-align: center;
+‎  }
+‎  input {
+‎    margin: 5px;
+‎    padding: 8px;
+‎    width: 90%;
+‎  }
+‎  button {
+‎    margin: 10px;
+‎    padding: 10px;
+‎    width: 90%;
+‎    background: #444;
+‎    color: #fff;
+‎    border: none;
+‎    border-radius: 8px;
+‎    cursor: pointer;
+‎  }
+‎  button:hover {
+‎    background: #666;
+‎  }
+‎  #log {
+‎    margin-top: 15px;
+‎    min-height: 60px;
+‎  }
+‎</style>
+‎</head>
+‎<body>
+‎<div class="container">
+‎  <h2>Ruleta Rusa</h2>
+‎  <div id="setup">
+‎    <input type="text" id="jug1" placeholder="Nombre jugador 1" />
+‎    <input type="text" id="jug2" placeholder="Nombre jugador 2" />
+‎    <button onclick="iniciarJuego()">Iniciar Juego</button>
+‎  </div>  <div id="juego" style="display:none;">
+‎    <p><strong>Turno de:</strong> <span id="turno"></span></p>
+‎    <button onclick="disparar()">Disparar</button>
+‎    <button onclick="finalizarJuego()">Finalizar</button>
+‎    <div id="log"></div>
+‎  </div>
+‎</div><script>
+‎  let jugadores = [];
+‎  let turnoActual = 0;
+‎  let tambor = [];
+‎  let juegoTerminado = false;
+‎
+‎  function iniciarJuego() {
+‎    const j1 = document.getElementById('jug1').value.trim();
+‎    const j2 = document.getElementById('jug2').value.trim();
+‎
+‎    if (!j1 || !j2) {
+‎      alert('Ingresa los nombres de ambos jugadores');
+‎      return;
+‎    }
+‎
+‎    jugadores = [j1, j2];
+‎    turnoActual = 0;
+‎    juegoTerminado = false;
+‎    tambor = generarTambor();
+‎
+‎    document.getElementById('setup').style.display = 'none';
+‎    document.getElementById('juego').style.display = 'block';
+‎    document.getElementById('turno').textContent = jugadores[turnoActual];
+‎    log('El juego ha iniciado. Proyectil oculto listo.');
+‎  }
+‎
+‎  function generarTambor() {
+‎    let arr = [0,0,0,0,0];
+‎    const bala = Math.floor(Math.random() * 5);
+‎    arr[bala] = 1;
+‎    return arr;
+‎  }
+‎
+‎  function disparar() {
+‎    if (juegoTerminado) return;
+‎
+‎    const posicion = Math.floor(Math.random() * tambor.length);
+‎    const resultado = tambor[posicion];
+‎
+‎    log(jugadores[turnoActual] + ' presionó el gatillo...');
+‎
+‎    if (resultado === 1) {
+‎      log('¡BANG! ' + jugadores[turnoActual] + ' ha sido eliminado.');
+‎      juegoTerminado = true;
+‎      const ganador = jugadores[1 - turnoActual];
+‎      log('Ganador: ' + ganador);
+‎      return;
+‎    } else {
+‎      log('Clic... no había bala.');
+‎    }
+‎
+‎    turnoActual = 1 - turnoActual;
+‎    document.getElementById('turno').textContent = jugadores[turnoActual];
+‎  }
+‎
+‎  function finalizarJuego() {
+‎    juegoTerminado = true;
+‎    log('Juego finalizado manualmente.');
+‎  }
+‎
+‎  function log(msg) {
+‎    document.getElementById('log').innerHTML += '<p>' + msg + '</p>';
+‎  }
+‎</script></body>
+‎</html>
