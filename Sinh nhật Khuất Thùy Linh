@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Khuất Thùy Linh — Sinh nhật vui vẻ nha 🎉</title>
+  <style>
+    :root{ --bg:#fff8fb; --card:#ffffff; --accent:#ff6bcb; --accent2:#ffd166; --text:#333 }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,'Helvetica Neue',Arial; background:linear-gradient(180deg,#fff8fb 0%, #fff0f7 50%); color:var(--text); min-height:100vh; display:flex; align-items:center; justify-content:center; padding:24px}
+    .page{width:100%;max-width:980px; display:grid; grid-template-columns:1fr 380px; gap:28px; align-items:center}
+    .card{background:var(--card); border-radius:18px; padding:28px; box-shadow:0 10px 30px rgba(0,0,0,0.06)}
+    header{display:flex; gap:14px; align-items:center}
+    .avatar{width:86px;height:86px;border-radius:14px; background:linear-gradient(135deg,var(--accent),var(--accent2)); display:flex; align-items:center; justify-content:center; font-size:36px; color:#fff; box-shadow:0 6px 18px rgba(255,107,203,0.16)}
+    h1{margin:0;font-size:24px}
+    p.lead{margin:10px 0 0;color:#6b6b6b}
+    .message{margin-top:18px;font-size:18px; line-height:1.45}
+    .cute{font-weight:700;color:var(--accent)}
+    .controls{display:flex; gap:12px; margin-top:18px}
+    .btn{padding:10px 14px;border-radius:12px;border:0;font-weight:600;cursor:pointer}
+    .btn-joy{background:linear-gradient(90deg,#ff8ac0,#ffd166); color:#272727}
+    .btn-conf{background:#fff;border:1px solid #f0d6ec}
+    aside{display:flex;flex-direction:column;gap:16px}
+    .panel{background:linear-gradient(180deg,#fff,#fff9f6); border-radius:14px; padding:16px; text-align:center; box-shadow:0 8px 20px rgba(0,0,0,0.04)}
+    .big-phrase{font-size:20px;font-weight:700}
+    .balloons{display:flex; gap:10px; justify-content:center; margin-top:12px}
+    .balloon{width:56px;height:80px;border-radius:50% 50% 50% 50%/60% 60% 40% 40%; background:linear-gradient(180deg,rgba(255,255,255,0.85),transparent), #ff9bd6; display:flex; align-items:flex-end; justify-content:center; position:relative}
+    .balloon:after{content:'';position:absolute;left:50%;transform:translateX(-50%);bottom:-12px;width:2px;height:20px;background:#555;border-radius:2px;}
+    footer{margin-top:18px;text-align:center;color:#8b8b8b;font-size:13px}
+
+    /* responsive */
+    @media (max-width:880px){.page{grid-template-columns:1fr; max-width:720px} aside{order:-1}}
+
+    /* small confetti base */
+    canvas.confetti{position:fixed;left:0;top:0;pointer-events:none;z-index:9999}
+
+    /* subtle float animation */
+    .float{animation:float 4s ease-in-out infinite}
+    @keyframes float{0%{transform:translateY(0)}50%{transform:translateY(-8px)}100%{transform:translateY(0)}}
+  </style>
+</head>
+<body>
+  <canvas class="confetti" id="confettiCanvas"></canvas>
+  <div class="page">
+    <main class="card">
+      <header>
+        <div class="avatar">KL</div>
+        <div>
+          <h1>Khuất Thùy Linh — Sinh nhật vui vẻ nha 🎂</h1>
+          <p class="lead">Một lời nhắn ấm áp từ người chị: dễ thương, ngọt ngào và đúng vibe.</p>
+        </div>
+      </header>
+
+      <div class="message">
+        <p>Chúc em <span class="cute">Khuất Thùy Linh</span> một sinh nhật thật rực rỡ, đầy niềm vui và những bất ngờ dễ thương. Mong em luôn giữ nụ cười, giữ đam mê và gặp được thật nhiều điều tốt đẹp trên đường mình chọn.</p>
+
+        <div class="controls">
+          <button class="btn btn-joy" id="btnCelebrate">Thổi nến & Pháo hoa 🎉</button>
+          <button class="btn btn-conf" id="btnMute">Tắt âm</button>
+        </div>
+      </div>
+
+      <footer>Gửi từ một người chị: yêu thương & ủng hộ em mỗi ngày 💛</footer>
+    </main>
+
+    <aside>
+      <div class="panel">
+        <div class="big-phrase">Sinh nhật vui vẻ, Thùy Linh!</div>
+        <div class="balloons" aria-hidden="true">
+          <div class="balloon float" style="background:linear-gradient(180deg,#ffd1ea,#ff9bd6)"></div>
+          <div class="balloon float" style="background:linear-gradient(180deg,#c2f7ff,#a8e6ff); animation-delay:.6s"></div>
+          <div class="balloon float" style="background:linear-gradient(180deg,#fff3b0,#ffd166); animation-delay:1.1s"></div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <p style="margin:0">Nhấn "Thổi nến & Pháo hoa" để mở âm thanh dễ thương + pháo hoa confetti 🧨</p>
+      </div>
+    </aside>
+  </div>
+
+  <script>
+    // Simple confetti particles on canvas
+    const canvas = document.getElementById('confettiCanvas');
+    const ctx = canvas.getContext('2d');
+    let W = canvas.width = window.innerWidth;
+    let H = canvas.height = window.innerHeight;
+    window.addEventListener('resize', ()=>{W=canvas.width=window.innerWidth; H=canvas.height=window.innerHeight});
+
+    function rand(min,max){return Math.random()*(max-min)+min}
+    function createParticles(count){
+      const arr=[];
+      for(let i=0;i<count;i++){
+        arr.push({x:rand(0,W), y:rand(-H,0), r:rand(4,10), d:rand(1,3), color:['#ff6bcb','#ffd166','#a8e6ff','#c2f7ff'][Math.floor(rand(0,4))], tilt:rand(-10,10), tiltAngle:0, tiltSpeed:rand(0.05,0.12)})
+      }
+      return arr;
+    }
+    let particles = [];
+    function render(){
+      ctx.clearRect(0,0,W,H);
+      for(let p of particles){
+        ctx.beginPath();
+        ctx.fillStyle = p.color;
+        ctx.save();
+        ctx.translate(p.x,p.y);
+        ctx.rotate(p.tiltAngle);
+        ctx.fillRect(-p.r/2, -p.r/2, p.r, p.r*1.6);
+        ctx.restore();
+
+        p.tiltAngle += p.tiltSpeed;
+        p.y += p.d + Math.sin(p.tiltAngle)*0.5;
+        p.x += Math.sin(p.tiltAngle/2);
+
+        if(p.y>H+20){ p.y = rand(-40, -10); p.x = rand(0,W); }
+      }
+      requestAnimationFrame(render);
+    }
+
+    // Audio: gentle happy chime using WebAudio API
+    let audioCtx=null;
+    function playChime(){
+      if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const now = audioCtx.currentTime;
+      // 3 simple bell notes
+      const freqs=[523.25, 659.25, 783.99]; // C5, E5, G5
+      freqs.forEach((f,i)=>{
+        const o = audioCtx.createOscillator();
+        const g = audioCtx.createGain();
+        o.type = 'sine'; o.frequency.setValueAtTime(f, now + i*0.15);
+        g.gain.setValueAtTime(0, now + i*0.15);
+        g.gain.linearRampToValueAtTime(0.12, now + i*0.15 + 0.02);
+        g.gain.exponentialRampToValueAtTime(0.001, now + i*0.15 + 1.6);
+        o.connect(g); g.connect(audioCtx.destination);
+        o.start(now + i*0.15); o.stop(now + i*0.15 + 1.8);
+      });
+    }
+
+    // celebration handler
+    const btn = document.getElementById('btnCelebrate');
+    const muteBtn = document.getElementById('btnMute');
+    let muted=false;
+    btn.addEventListener('click', ()=>{
+      if(!particles.length) particles = createParticles(160);
+      if(!muted) playChime();
+      // short sparkle burst
+      setTimeout(()=>{ particles = createParticles(120); }, 100);
+    });
+    muteBtn.addEventListener('click', ()=>{ muted = !muted; muteBtn.textContent = muted? 'Bật âm' : 'Tắt âm' })
+
+    render();
+  </script>
+</body>
+</html>
