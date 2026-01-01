@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kutub | Tour&Travels</title>
+    <link rel="icon" href="images/icn.jpg">
+</head>
+<body>
+    <div style="color:red; text-align: center;" >
+        <h1>
+           Tourist spot Name <br>Bandorban
+        </h1>
+    </div>
+    <h2>
+        <b>
+            Turist Regestration form
+        </b>
+    </h2>
+
+    <form action="">
+        <label for="Name">Name</label>
+        <input type="Name" placeholder="Your name" ><br><br>
+        <label for="Fathers Name"> Fathers Name</label>
+        <input type="Fathers Name" placeholder="Fathers Name"><br><br>
+        <label for="Address">Address</label>
+        <input type="Address" placeholder="Address"><br><br>
+        <label for="Mobile Number">Mobile Number</label>
+        <input type="tel" name="Mobile" placeholder="017********"><br><br>
+        <label for="email">E-mail</label>
+        <input type="email" name="User E-mail" id="" placeholder="example@gmail.com">
+    </form><br><br>
+    <button>Submit</button><br>
+<img src="images/travel-world.jpg" width="500px" height="300px" alt=""><br>
+<a href="https://www.youtube.com/watch?v=P3ZpIUNT1nE">This is Point video</a>
+
+</body>
+</html>
